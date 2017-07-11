@@ -1,0 +1,58 @@
+{
+  "intents": [
+    {
+      "intent": "DriverAnswerIntent",
+      "slots": [
+        {
+          "name": "Answer",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
+      "intent": "MotorAnswerIntent",
+      "slots": [
+        {
+          "name": "Answer",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
+      "intent": "DontKnowIntent"
+    },
+    {
+      "intent": "QuizIntent"
+    },
+    {
+      "intent": "DriverQuizIntent"
+    },
+    {
+      "intent": "MotorQuizIntent"
+    },
+    {
+      "intent": "WhatsNewIntent"
+    },
+    {
+      "intent": "MoreInfoIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.YesIntent"
+    },
+    {
+      "intent": "AMAZON.NoIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    },
+    {
+      "intent": "AMAZON.RepeatIntent"
+    }
+  ]
+}

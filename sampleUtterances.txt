@@ -1,0 +1,74 @@
+DriverAnswerIntent {Answer}
+DriverAnswerIntent is it {Answer}
+DriverAnswerIntent the answer is {Answer}
+DriverAnswerIntent my answer is {Answer}
+DriverAnswerIntent i think it is {Answer}
+DriverAnswerIntent i know it is {Answer}
+DriverAnswerIntent i think it's {Answer}
+DriverAnswerIntent i know it's {Answer}
+DriverAnswerIntent show me {Answer}
+
+MotorAnswerIntent {Answer}
+MotorAnswerIntent is it {Answer}
+MotorAnswerIntent the answer is {Answer}
+MotorAnswerIntent my answer is {Answer}
+MotorAnswerIntent i think it is {Answer}
+MotorAnswerIntent i know it is {Answer}
+MotorAnswerIntent i think it's {Answer}
+MotorAnswerIntent i know it's {Answer}
+MotorAnswerIntent show me {Answer}
+
+DontKnowIntent i don't know
+DontKnowIntent i do not know
+DontKnowIntent i dunno
+DontKnowIntent dunno
+DontKnowIntent i'm not sure
+DontKnowIntent i am not sure
+DontKnowIntent i don't know the answer
+DontKnowIntent i do not know the answer
+DontKnowIntent i don't know what the answer is
+DontKnowIntent i do not know what the answer is
+DontKnowIntent i don't know that one
+DontKnowIntent i do not know that one
+DontKnowIntent i don't know this one
+DontKnowIntent i do not know this one
+
+QuizIntent quiz me
+QuizIntent give me a quiz
+QuizIntent start a quiz
+QuizIntent start a new quiz
+QuizIntent new quiz
+QuizIntent test me
+
+DriverQuizIntent driver test
+DriverQuizIntent driver permit test
+DriverQuizIntent driver's test
+DriverQuizIntent driver's permit test
+DriverQuizIntent driver
+
+MotorQuizIntent motorcycle test
+MotorQuizIntent motorcycle permit test
+MotorQuizIntent motorcycle
+
+WhatsNewIntent what's new
+WhatsNewIntent what is new
+WhatsNewIntent tell me what's new
+WhatsNewIntent tell me what is new
+WhatsNewIntent update me
+WhatsNewIntent update me on what's new
+WhatsNewIntent update me on what is new
+WhatsNewIntent get me up to date
+
+MoreInfoIntent more info
+MoreInfoIntent more information
+MoreInfoIntent tell me more info
+MoreInfoIntent tell me more information
+MoreInfoIntent tell me more
+
+AMAZON.HelpIntent what can i say
+AMAZON.HelpIntent how do i start a quiz
+AMAZON.HelpIntent how do i use this skill
+
+AMAZON.RepeatIntent repeat that question
+AMAZON.RepeatIntent say that again
+AMAZON.RepeatIntent what was that
