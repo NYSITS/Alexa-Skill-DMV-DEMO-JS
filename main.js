@@ -2,7 +2,7 @@
   MyDMV Alexa Skill.
   This is the MyDMV Alexa Skill developed for the New York State Department of Motor Vehicles (NYS DMV)
   built with the Amazon Alexa Skills Kit. The Intent Schema, Custom Slots, and Sample Utterances for this skill
-  on the NYS ITS GitHub repository located at https://github.com/NYSITS/DMV-Alexa-Skill-DEMO
+  on the NYS ITS GitHub repository located at https://github.com/NYSITS/Alexa-Skill-DMV-DEMO-JS
   Developed by Nicholas Stucchi
   Developed on July 11, 2017
   Modified on
