@@ -361,7 +361,7 @@ function handleMoreInfoRequest(intent, session, callback) {
 
 function handleQuizRequest(intent, session, callback) {
   var sessionAttributes = {},
-      speechOutput = "Would you like me to quiz you for the driver permit test? Or would you like me to quiz you for the motorcycle permit test?  ",
+      speechOutput = "Would you like me to quiz you for the driver permit test. Or would you like me to quiz you for the motorcycle permit test.  ",
       repromptText = "Which permit test would you liked to be quizzed on? Driver or Motorcycle? ",
       shouldEndSession = false;
 
@@ -378,7 +378,7 @@ function handleDriverQuizRequest(intent, session, callback) {
             + " questions. Just say the number of the answer you think is correct. Let's start. ",
         shouldEndSession = false,
 
-        gameQuestions = populateDriverTestGameQuestions(),
+        gameQuestions = populateDriverTestQuestions(),
         correctAnswerIndex = Math.floor(Math.random() * (ANSWER_COUNT)),
         roundAnswers = populateDriverTestRoundAnswers(gameQuestions, 0, correctAnswerIndex),
 
@@ -439,101 +439,6 @@ function populateDriverTestRoundAnswers(gameQuestionIndexes, correctAnswerIndex,
     // only ANSWER_COUNT will be selected.
     var answers = [],
         answersCopy = driver_questions[gameQuestionIndexes[correctAnswerIndex]][Object.keys(driver_questions[gameQuestionIndexes[correctAnswerIndex]])[0]],
-        temp, i;
-
-    var index = answersCopy.length;
-
-    if (index < ANSWER_COUNT){
-        throw "Not enough answers for question.";
-    }
-
-    // Shuffle the answers, excluding the first element.
-    for (var j = 1; j < answersCopy.length; j++){
-        var rand = Math.floor(Math.random() * (index - 1)) + 1;
-        index -= 1;
-
-        var temp = answersCopy[index];
-        answersCopy[index] = answersCopy[rand];
-        answersCopy[rand] = temp;
-    }
-
-    // Swap the correct answer into the target location
-    for (i = 0; i < ANSWER_COUNT; i++) {
-        answers[i] = answersCopy[i];
-    }
-    temp = answers[0];
-    answers[0] = answers[correctAnswerTargetLocation];
-    answers[correctAnswerTargetLocation] = temp;
-    return answers;
-}
-
-function handleMotorQuizRequest(intent, session, callback) {
-  var sessionAttributes = {},
-        speechOutput = "I will ask you " + GAME_LENGTH.toString()
-            + " questions. Just say the number of the answer you think is correct. Let's start. ",
-        shouldEndSession = false,
-
-        gameQuestions = populateDriverTestGameQuestions(),
-        correctAnswerIndex = Math.floor(Math.random() * (ANSWER_COUNT)),
-        roundAnswers = populateDriverTestRoundAnswers(gameQuestions, 0, correctAnswerIndex),
-
-        currentQuestionIndex = 0,
-        spokenQuestion = Object.keys(motor_questions[gameQuestions[currentQuestionIndex]])[0],
-        repromptText = "Question 1. " + spokenQuestion + " ",
-
-        i, j;
-
-    for (i = 0; i < ANSWER_COUNT; i++) {
-        repromptText += (i+1).toString() + ". " + roundAnswers[i] + ". "
-    }
-    speechOutput += repromptText;
-    sessionAttributes = {
-        "speechOutput": repromptText,
-        "repromptText": repromptText,
-        "currentQuestionIndex": currentQuestionIndex,
-        "correctAnswerIndex": correctAnswerIndex + 1,
-        "questions": gameQuestions,
-        "score": 0,
-        "correctAnswerText":
-            motor_questions[gameQuestions[currentQuestionIndex]][Object.keys(motor_questions[gameQuestions[currentQuestionIndex]])[0]][0]
-    };
-    callback(sessionAttributes,
-        buildSpeechletResponse(CARD_TITLE, speechOutput, repromptText, shouldEndSession));
-}
-
-function populateMotorTestQuestions() {
-    var gameQuestions = [];
-    var indexList = [];
-    var index = motor_questions.length;
-
-    if (GAME_LENGTH > index){
-        throw "Invalid Game Length.";
-    }
-
-    for (var i = 0; i < motor_questions.length; i++){
-        indexList.push(i);
-    }
-
-    // Pick GAME_LENGTH random questions from the list to ask the user, make sure there are no repeats.
-    for (var j = 0; j < GAME_LENGTH; j++){
-        var rand = Math.floor(Math.random() * index);
-        index -= 1;
-
-        var temp = indexList[index];
-        indexList[index] = indexList[rand];
-        indexList[rand] = temp;
-        gameQuestions.push(indexList[index]);
-    }
-
-    return gameQuestions;
-}
-
-function populateMotorTestRoundAnswers(gameQuestionIndexes, correctAnswerIndex, correctAnswerTargetLocation) {
-    // Get the answers for a given question, and place the correct answer at the spot marked by the
-    // correctAnswerTargetLocation variable. Note that you can have as many answers as you want but
-    // only ANSWER_COUNT will be selected.
-    var answers = [],
-        answersCopy = motor_questions[gameQuestionIndexes[correctAnswerIndex]][Object.keys(motor_questions[gameQuestionIndexes[correctAnswerIndex]])[0]],
         temp, i;
 
     var index = answersCopy.length;
@@ -639,6 +544,101 @@ function handleDriverAnswerRequest(intent, session, callback) {
     }
 }
 
+function handleMotorQuizRequest(intent, session, callback) {
+  var sessionAttributes = {},
+        speechOutput = "I will ask you " + GAME_LENGTH.toString()
+            + " questions. Just say the number of the answer you think is correct. Let's start. ",
+        shouldEndSession = false,
+
+        gameQuestions = populateMotorTestQuestions(),
+        correctAnswerIndex = Math.floor(Math.random() * (ANSWER_COUNT)),
+        roundAnswers = populateMotorTestRoundAnswers(gameQuestions, 0, correctAnswerIndex),
+
+        currentQuestionIndex = 0,
+        spokenQuestion = Object.keys(motor_questions[gameQuestions[currentQuestionIndex]])[0],
+        repromptText = "Question 1. " + spokenQuestion + " ",
+
+        i, j;
+
+    for (i = 0; i < ANSWER_COUNT; i++) {
+        repromptText += (i+1).toString() + ". " + roundAnswers[i] + ". "
+    }
+    speechOutput += repromptText;
+    sessionAttributes = {
+        "speechOutput": repromptText,
+        "repromptText": repromptText,
+        "currentQuestionIndex": currentQuestionIndex,
+        "correctAnswerIndex": correctAnswerIndex + 1,
+        "questions": gameQuestions,
+        "score": 0,
+        "correctAnswerText":
+            motor_questions[gameQuestions[currentQuestionIndex]][Object.keys(motor_questions[gameQuestions[currentQuestionIndex]])[0]][0]
+    };
+    callback(sessionAttributes,
+        buildSpeechletResponse(CARD_TITLE, speechOutput, repromptText, shouldEndSession));
+}
+
+function populateMotorTestQuestions() {
+    var gameQuestions = [];
+    var indexList = [];
+    var index = motor_questions.length;
+
+    if (GAME_LENGTH > index){
+        throw "Invalid Game Length.";
+    }
+
+    for (var i = 0; i < motor_questions.length; i++){
+        indexList.push(i);
+    }
+
+    // Pick GAME_LENGTH random questions from the list to ask the user, make sure there are no repeats.
+    for (var j = 0; j < GAME_LENGTH; j++){
+        var rand = Math.floor(Math.random() * index);
+        index -= 1;
+
+        var temp = indexList[index];
+        indexList[index] = indexList[rand];
+        indexList[rand] = temp;
+        gameQuestions.push(indexList[index]);
+    }
+
+    return gameQuestions;
+}
+
+function populateMotorTestRoundAnswers(gameQuestionIndexes, correctAnswerIndex, correctAnswerTargetLocation) {
+    // Get the answers for a given question, and place the correct answer at the spot marked by the
+    // correctAnswerTargetLocation variable. Note that you can have as many answers as you want but
+    // only ANSWER_COUNT will be selected.
+    var answers = [],
+        answersCopy = motor_questions[gameQuestionIndexes[correctAnswerIndex]][Object.keys(motor_questions[gameQuestionIndexes[correctAnswerIndex]])[0]],
+        temp, i;
+
+    var index = answersCopy.length;
+
+    if (index < ANSWER_COUNT){
+        throw "Not enough answers for question.";
+    }
+
+    // Shuffle the answers, excluding the first element.
+    for (var j = 1; j < answersCopy.length; j++){
+        var rand = Math.floor(Math.random() * (index - 1)) + 1;
+        index -= 1;
+
+        var temp = answersCopy[index];
+        answersCopy[index] = answersCopy[rand];
+        answersCopy[rand] = temp;
+    }
+
+    // Swap the correct answer into the target location
+    for (i = 0; i < ANSWER_COUNT; i++) {
+        answers[i] = answersCopy[i];
+    }
+    temp = answers[0];
+    answers[0] = answers[correctAnswerTargetLocation];
+    answers[correctAnswerTargetLocation] = temp;
+    return answers;
+}
+
 function handleMotorAnswerRequest(intent, session, callback) {
     var speechOutput = "";
     var sessionAttributes = {};
@@ -714,6 +714,117 @@ function handleMotorAnswerRequest(intent, session, callback) {
                 buildSpeechletResponse(CARD_TITLE, speechOutput, repromptText, false));
         }
     }
+}
+
+function handleAnswerRequest(intent, session, callback) {
+    var speechOutput = "";
+    var sessionAttributes = {};
+    var gameInProgress = session.attributes && session.attributes.questions;
+    var answerSlotValid = isAnswerSlotValid(intent);
+    var userGaveUp = intent.name === "DontKnowIntent";
+
+    if (!gameInProgress) {
+        // If the user responded with an answer but there is no game in progress, ask the user
+        // if they want to start a new game. Set a flag to track that we've prompted the user.
+        sessionAttributes.userPromptedToContinue = true;
+        speechOutput = "There is no quiz in progress. Would you like to start a new quiz? ";
+        callback(sessionAttributes,
+            buildSpeechletResponse(CARD_TITLE, speechOutput, speechOutput, false));
+    } else if (!answerSlotValid && !userGaveUp) {
+        // If the user provided answer isn't a number > 0 and < ANSWER_COUNT,
+        // return an error message to the user. Remember to guide the user into providing correct values.
+        var reprompt = session.attributes.speechOutput;
+        var speechOutput = "Your answer must be a number between 1 and " + ANSWER_COUNT + ". " + reprompt;
+        callback(session.attributes,
+            buildSpeechletResponse(CARD_TITLE, speechOutput, reprompt, false));
+    } else {
+        var gameQuestions = session.attributes.questions,
+            correctAnswerIndex = parseInt(session.attributes.correctAnswerIndex),
+            currentScore = parseInt(session.attributes.score),
+            currentQuestionIndex = parseInt(session.attributes.currentQuestionIndex),
+            correctAnswerText = session.attributes.correctAnswerText;
+
+        var speechOutputAnalysis = "";
+
+        if (answerSlotValid && parseInt(intent.slots.Answer.value) == correctAnswerIndex) {
+            currentScore++;
+            speechOutputAnalysis = "correct. ";
+        } else {
+            if (!userGaveUp) {
+                speechOutputAnalysis = "wrong. "
+            }
+            speechOutputAnalysis += "The correct answer is " + correctAnswerIndex + ": " + correctAnswerText + ". ";
+        }
+        // if currentQuestionIndex is 4, we've reached 5 questions (zero-indexed) and can exit the game session
+        if (currentQuestionIndex == GAME_LENGTH - 1) {
+            speechOutput = userGaveUp ? "" : "That answer is ";
+            speechOutput += speechOutputAnalysis + "You got " + currentScore.toString() + " out of "
+                + GAME_LENGTH.toString() + " questions correct. Thank you for using the My DMV Practice Permit Test. Good luck on your test!";
+            callback(session.attributes,
+                buildSpeechletResponse(CARD_TITLE, speechOutput, "", true));
+        } else {
+            currentQuestionIndex += 1;
+            var spokenQuestion = Object.keys(questions[gameQuestions[currentQuestionIndex]])[0];
+            // Generate a random index for the correct answer, from 0 to 3
+            correctAnswerIndex = Math.floor(Math.random() * (ANSWER_COUNT));
+            var roundAnswers = populateRoundAnswers(gameQuestions, currentQuestionIndex, correctAnswerIndex),
+
+                questionIndexForSpeech = currentQuestionIndex + 1,
+                repromptText = "Question " + questionIndexForSpeech.toString() + ". " + spokenQuestion + " ";
+            for (var i = 0; i < ANSWER_COUNT; i++) {
+                repromptText += (i+1).toString() + ". " + roundAnswers[i] + ". "
+            }
+            speechOutput += userGaveUp ? "" : "That answer is ";
+            speechOutput += speechOutputAnalysis + "Your score is " + currentScore.toString() + ". " + repromptText;
+
+            sessionAttributes = {
+                "speechOutput": repromptText,
+                "repromptText": repromptText,
+                "currentQuestionIndex": currentQuestionIndex,
+                "correctAnswerIndex": correctAnswerIndex + 1,
+                "questions": gameQuestions,
+                "score": currentScore,
+                "correctAnswerText":
+                    questions[gameQuestions[currentQuestionIndex]][Object.keys(questions[gameQuestions[currentQuestionIndex]])[0]][0]
+            };
+            callback(sessionAttributes,
+                buildSpeechletResponse(CARD_TITLE, speechOutput, repromptText, false));
+        }
+    }
+}
+
+function populateRoundAnswers(gameQuestionIndexes, correctAnswerIndex, correctAnswerTargetLocation) {
+    // Get the answers for a given question, and place the correct answer at the spot marked by the
+    // correctAnswerTargetLocation variable. Note that you can have as many answers as you want but
+    // only ANSWER_COUNT will be selected.
+    var answers = [],
+        answersCopy = questions[gameQuestionIndexes[correctAnswerIndex]][Object.keys(questions[gameQuestionIndexes[correctAnswerIndex]])[0]],
+        temp, i;
+
+    var index = answersCopy.length;
+
+    if (index < ANSWER_COUNT){
+        throw "Not enough answers for question.";
+    }
+
+    // Shuffle the answers, excluding the first element.
+    for (var j = 1; j < answersCopy.length; j++){
+        var rand = Math.floor(Math.random() * (index - 1)) + 1;
+        index -= 1;
+
+        var temp = answersCopy[index];
+        answersCopy[index] = answersCopy[rand];
+        answersCopy[rand] = temp;
+    }
+
+    // Swap the correct answer into the target location
+    for (i = 0; i < ANSWER_COUNT; i++) {
+        answers[i] = answersCopy[i];
+    }
+    temp = answers[0];
+    answers[0] = answers[correctAnswerTargetLocation];
+    answers[correctAnswerTargetLocation] = temp;
+    return answers;
 }
 
 function handleRepeatRequest(intent, session, callback) {
